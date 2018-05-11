@@ -1,0 +1,65 @@
+{% extends 'default/layout.njk' %}
+{% block body %}
+ <section id="main">
+      <div class="container">
+        <header>
+          <h2>{{ project.title }}</h2>
+          <div class="addon">
+           <form action="/app/projects/{{project.id}}?_method=DELETE" method="POST">  <button type="submit" class="btn btn-danger">Excluir projeto</button></form>
+
+          </div>
+        </header>
+
+        <section id="content">
+        <nav>
+    <div class="sessions">
+      {% for section in sections %}
+        <a href="/app/projects/{{ project.id }}/sections/{{ section.id }}">{{section.title}}</a>
+      {% endfor %}
+    </div>
+    <form action="/app/projects/{{project.id}}/sections/create" method="post">
+      <input type="text" name="title" placeholder="Nova seção">
+      <button type="submit" class="btn"><img src="/img/plus.svg"></button>
+    </form>
+  </nav>
+
+          <article>
+            <div class="project-header">
+              <h1>{{ section.title }}</h1>
+            <form action="/app/projects/{{project.id}}/sections/{{section.id}}?_method=DELETE" method="POST"><a href=""> <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button></a></form>
+            <button class="btn btn-success" style="margin-left: 10px;" data-toggle="modal" type="button" data-target="#exampleModalCenter"><i class="fas fa-plus" ></i></button>
+            </div>
+            {{ section.formattedContent | safe }}
+
+          </article>
+        </section>
+      </div>
+    </section>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Adicionar conteúdo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/app/projects/{{ project.id }}/sections/{{ section.id }}?_method=PUT" method="POST">
+            <textarea name="content" id="" cols="50" rows="10">{{section.content}}</textarea>
+            <button type="submit" class="btn btn-success">Adicionar conteúdo</button>
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
+
+
+
